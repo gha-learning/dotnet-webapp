@@ -24,13 +24,13 @@ jobs:
               with:
                 dotnet-version: ${{ github.event.inputs.dotnet-version }}
             
-            - name: "Set dependencies"
-              uses: "actions/cache@v3"
-              with:
-                path: ~/.nuget/packages
-                key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-                restore-keys: |
-                    ${{ runner.os }}-nuget-
+            # - name: "Set dependencies"
+            #   uses: "actions/cache@v3"
+            #   with:
+            #     path: ~/.nuget/packages
+            #     key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+            #     restore-keys: |
+            #         ${{ runner.os }}-nuget-
 
             - name: "Restore dependencies"
               run: dotnet restore          
@@ -38,14 +38,14 @@ jobs:
             - name: "Build"
               run: dotnet build WebApplication1.sln --configuration Release --no-restore 
         
-            - name: "SonarQube scanTest"
-              run: sonarsource/sonarqube-scan-action@<action version>
-              env: 
-                SONARQUBE_TOKEN: ${{ secrets.SONAR_TOKEN }}
-                SONARQUBE_HOST: ${{ vars.SONAR_HOST_URL }}
+            - name: SonarQube Scan
+              uses: kitabisa/sonarqube-action@v1.2.0
+              with:
+                host: ${{ secrets.SONARQUBE_HOST }}
+                login: ${{ secrets.SONARQUBE_TOKEN }}
 
             - name: Publish
-              run: dotnet publish build WebApplication1.sln --configuration Release --output ./webapp
+              run: dotnet publish WebApplication1.sln --configuration Release --output ./webapp
     
             - name: Archive build artifacts
               uses: actions/upload-artifact@v4
