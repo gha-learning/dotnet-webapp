@@ -1,0 +1,18 @@
+name: CI Dotnet
+
+on:
+    workflow_dispatch:
+        inputs:
+            dotnet-version:
+                type: "string"
+                description: "dotnet version"
+                default: "8.x"
+            path:
+                type: "string"
+                description:  "app path"
+                default: "/"
+jobs:
+    build:
+        runs-on: "ubuntu-latest"
+        name: "Checkout"
+        uses: "actions/checkout@v3"
