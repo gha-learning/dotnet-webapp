@@ -41,6 +41,12 @@ jobs:
                 SONAR_TOKEN: ${{ var.SONAR_TOKEN }}
                 SONAR_HOST_URL: ${{ var.SONAR_HOST_URL }}
 
-
+            - name: Publish
+              run: dotnet publish build WebApplication1.sln --configuration Release --output ./webapp
     
-          
+            
+            - name: Archive build artifacts
+               uses: actions/upload-artifact@v2
+               with: 
+                  name: dotnet-app
+                  path: ./webapp
