@@ -39,7 +39,10 @@ jobs:
               run: dotnet build WebApplication1.sln --configuration Release --no-restore 
         
             - name: "Get org name"
-              run: echo echo "${GITHUB_REPOSITORY}" | cut -d'/' -f1
+              id: get-org-name
+              run:  | 
+                ORG_NAME=$(echo "${GITHUB_REPOSITORY}" | cut -d'/' -f1)
+                echo "org_name=$ORG_NAME" >> $GITHUB_OUTPUT
 
             - name: SonarQube Scan
               uses: sonarsource/sonarcloud-github-action@v3
@@ -47,8 +50,8 @@ jobs:
                 SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
               with:
                 args: >
-                -Dsonar.organization=${{ echo $GITHUB_REPOSITORY | cut -d '/' -f1 }}
-                -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY}}
+                  -Dsonar.organization=${{ steps.get-org-name.outputs.orgname }}
+                  -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY}}
                 
 
             - name: Publish
