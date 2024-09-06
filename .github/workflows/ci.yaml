@@ -32,21 +32,23 @@ jobs:
                 restore-keys: |
                     ${{ runner.os }}-nuget-
 
+            - name: "Restore dependencies"
+              run: dotnet restore          
+
             - name: "Build"
               run: dotnet build WebApplication1.sln --configuration Release --no-restore 
         
             - name: "SonarQube scanTest"
               run: sonarsource/sonarqube-scan-action@<action version>
               env: 
-                SONAR_TOKEN: ${{ var.SONAR_TOKEN }}
-                SONAR_HOST_URL: ${{ var.SONAR_HOST_URL }}
+                SONARQUBE_TOKEN: ${{ secrets.SONAR_TOKEN }}
+                SONARQUBE_HOST: ${{ vars.SONAR_HOST_URL }}
 
             - name: Publish
               run: dotnet publish build WebApplication1.sln --configuration Release --output ./webapp
     
-            
             - name: Archive build artifacts
-               uses: actions/upload-artifact@v2
-               with: 
-                  name: dotnet-app
-                  path: ./webapp
+              uses: actions/upload-artifact@v4
+              with: 
+                name: dotnet-app
+                path: ./webapp
