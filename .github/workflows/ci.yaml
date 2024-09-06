@@ -40,9 +40,8 @@ jobs:
         
             - name: SonarQube Scan
               uses: sonarsource/sonarcloud-github-action@v3
-              with:
-                host: ${{ vars.SONARQUBE_HOST }}
-                login: ${{ secrets.SONARQUBE_TOKEN }}
+              env:
+                SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
 
             - name: Publish
               run: dotnet publish WebApplication1.sln --configuration Release --output ./webapp
