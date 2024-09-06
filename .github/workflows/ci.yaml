@@ -50,7 +50,7 @@ jobs:
                 SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
               with:
                 args: >
-                  -Dsonar.organization=${{ steps.get-org-name.outputs.orgname }}
+                  -Dsonar.organization=${{ steps.get-org-name.outputs.org_name }}
                   -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY}}
                 
 
