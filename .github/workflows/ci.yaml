@@ -11,30 +11,31 @@ on:
                 type: "string"
                 description:  "app path"
                 default: "/"
+
 jobs:
     build:
         runs-on: "ubuntu-latest"
         steps:
+            - name: "Checkout"
+              uses: "actions/checkout@v3"
 
-        - name: "Checkout"
-          uses: "actions/checkout@v3"
-
-        - name: "Setup .NET"
-            uses: "actions/setup-dotnet@v3"
-            with:
+            - name: "Setup .NET"
+              uses: "actions/setup-dotnet@v3"
+              with:
                 dotnet-version: ${{ github.event.inputs.dotnet-version }}
-        - name: "Set dependencies"
-          uses: "actions/cache@v3"
-            with:
+            
+            - name: "Set dependencies"
+              uses: "actions/cache@v3"
+              with:
                 path: ~/.nuget/packages
                 key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
                 restore-keys: |
                     ${{ runner.os }}-nuget-
 
-        - name: "build"
-          run: dotnet build WebApplication1.sln --configuration Release --no-restore 
-
-        - 
+            - name: "Build"
+              run: dotnet build WebApplication1.sln --configuration Release --no-restore 
+        
+          
 
 
     
