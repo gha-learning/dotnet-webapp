@@ -39,7 +39,7 @@ jobs:
               run: dotnet build WebApplication1.sln --configuration Release --no-restore 
         
             - name: SonarQube Scan
-              uses: kitabisa/sonarqube-action@v1.2.0
+              uses: sonarsource/sonarcloud-github-action@v1.2.0
               with:
                 host: ${{ vars.SONARQUBE_HOST }}
                 login: ${{ secrets.SONARQUBE_TOKEN }}
