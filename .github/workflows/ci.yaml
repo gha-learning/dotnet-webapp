@@ -35,7 +35,11 @@ jobs:
             - name: "Build"
               run: dotnet build WebApplication1.sln --configuration Release --no-restore 
         
-          
+            - name: "SonarQube scanTest"
+              run: sonarsource/sonarqube-scan-action@<action version>
+              env: 
+                SONAR_TOKEN: ${{ var.SONAR_TOKEN }}
+                SONAR_HOST_URL: ${{ var.SONAR_HOST_URL }}
 
 
     
